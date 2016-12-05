@@ -156,9 +156,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\DbController.cs" />
     <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\ResponseOptionController.cs" />
     <Compile Include="Entities\DataContext.cs" />
+    <Compile Include="Entities\DataContextExtention.cs" />
     <Compile Include="Entities\Question.cs" />
     <Compile Include="Entities\ResponseOption.cs" />
     <Compile Include="Entities\Result.cs" />

@@ -36,7 +36,7 @@ namespace VotingApplication.Services
         public ResponseOption GetResponseOptions(int id, int questionId)
         {
             var question = GetQuestionById(questionId);
-            var responseItem = question.answer.SingleOrDefault(i => i.Id == id);
+            var responseItem = question.Answers.SingleOrDefault(i => i.Id == id);
 
             return responseItem;
         }
@@ -59,7 +59,7 @@ namespace VotingApplication.Services
         public void DeleteResponseOption(int id, int questionId)
         {
             var question = GetQuestionById(questionId);
-            var itemToDelete = question.answers.SingleOrDefault(a => a.Id == id);
+            var itemToDelete = question.Answers.SingleOrDefault(a => a.Id == id);
             _ctx.ResponseOptions.Remove(itemToDelete);
             _ctx.SaveChanges();
         }

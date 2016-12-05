@@ -9,11 +9,9 @@ namespace VotingApplication.Models
     public class CreateQuestion
     {
         [Required(ErrorMessage = "You should provide a name value.")]
-        [MaxLength(10)]
+        [MaxLength(50)]
         public string Title { get; set; }
 
         public bool Status { get; set; }
-
-
     }
 }

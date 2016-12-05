@@ -9,6 +9,6 @@ namespace VotingApplication.Models
     {
         public int Id { get; set; }
         public string option { get; set; }
-        public virtual Question question { get; set; }
+       // public virtual Question question { get; set; }
     }
 }

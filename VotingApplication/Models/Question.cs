@@ -8,10 +8,8 @@ namespace VotingApplication.Models
     public class Question
     {
         public int Id { get; set; }
-        public string title { get; set; }
-        public List<ResponseOption> answer;
+        public string Title { get; set; }
+        public List<ResponseOption> Answers;
         public bool Status { get; set; }
-
-
     }
 }
