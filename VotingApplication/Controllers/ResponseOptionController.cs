@@ -27,52 +27,7 @@ namespace VotingApplication.Controllers
             }
             set { _questionRepository = value; }
         }
-
-
-        //[Route("{questionId}/responseOption")]
-        //[HttpGet()]
-        //public IHttpActionResult GetResponseOptions(int questionId)
-        //{
-        //    try
-        //    {
-        //        var questionEntities = _questionRepository.GetResponseOptions(questionId);
-
-        //        if (questionEntities == null)
-        //        {
-        //            return NotFound();
-        //        }
-
-        //        return Ok(Mapper.Map<IEnumerable<Models.Question>>(questionEntities));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //          return StatusCode(HttpStatusCode.BadRequest);
-        //    }
-        //}
-        //[Route("{questionId}/responseOption/{id}", Name = "GetResponseOptions")]
-        //[HttpGet]
-        //public IHttpActionResult GetResponseOptions(int questionId, int id)
-        //{
-        //    try
-        //    {
-        //        var question = _questionRepository.GetQuestionById(questionId);
-
-        //        if (question == null)
-        //        {
-        //            return NotFound();
-        //        }
-        //        var response = _questionRepository.GetResponseOption(id, questionId);
-        //        if (response == null)
-        //            return NotFound();
-
-        //        return Ok(Mapper.Map<Models.ResponseOption>(response));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, "A problem occured.");
-        //    }
-        //}
-
+        
         [Route("api/questions/{questionId}/responseOptions")]
         [HttpPost]
         public IHttpActionResult CreateResponseOption(int questionId,
@@ -104,7 +59,7 @@ namespace VotingApplication.Controllers
             return Created("GetResponseOption", Mapper.Map<Models.ResponseOption>(item));
         }
 
-        [Route("{questionId}/responseOption/{id}")]
+        [Route("api/questions/{questionId}/responseOptions/{id}")]
         [HttpPut()]
         public IHttpActionResult UpdateResponseOption(int questionId, int id,
           [FromBody] CreateResponseOption responseOption)
@@ -118,92 +73,30 @@ namespace VotingApplication.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var question = _questionRepository.GetQuestionById(questionId);
+            var question = QuestionRepository.GetQuestionById(questionId);
             if (question == null)
             {
                 return NotFound();
             }
 
-            _questionRepository.UpdateResponseOption(Mapper.Map<Entities.ResponseOption>(responseOption));
-
-            //if (responseOptionToUpdate == null)
-            //    return NotFound();
-
-            //responseOptionToUpdate.option = responseOption.option;
-
-            //_questionRepository.UpdateToListItem(responseOptionToUpdate);
-            //return NoContent();
+            QuestionRepository.UpdateResponseOption(Mapper.Map<Entities.ResponseOption>(responseOption));
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        //[Route("{questionId}/responseOption/{id}")]
-        //[HttpPatch()]
-        //public IHttpActionResult PartiallyUpdateresponseOption(int questionId, int id,
-        //  [FromBody] JsonPatchDocument<CreateResponseOption> patchDoc)
-        //{
-        //    if (patchDoc == null)
-        //    {
-        //        return BadRequest();
-        //    }
 
-        //    var question = _questionRepository.GetQuestionById(questionId);
-        //    if (question == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var responseOption = _questionRepository.GetResponseOption(id, questionId);
-        //    if (responseOption == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var responseOptionToPatch =
-        //           new CreateResponseOption()
-        //           {
-        //               option = responseOption.option
-        //           };
-
-        //    patchDoc.ApplyTo(responseOptionToPatch, ModelState);
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    //if (responseOptionToPatch.Description == todoListItemToPatch.Title)
-        //    //{
-        //    //    ModelState.AddModelError("Description", "The provided description should be different from the name.");
-        //    //}
-
-        //    TryValidateModel(responseOptionToPatch);
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    responseOption.option = responseOptionToPatch.option;
-
-        //    _questionRepository.UpdateToListItem(responseOption);
-        //    return NoContent();
-        //}
-
-        [Route("{questionId}/responseoptions/{id}")]
+        [Route("api/questions/{questionId}/responseOptions/{id}")]
         [HttpDelete()]
         public IHttpActionResult DeleteResponseOption(int questionId, int id)
         {
-            var question = _questionRepository.GetQuestionById(questionId);
+            var question = QuestionRepository.GetQuestionById(questionId);
 
             if (question == null)
             {
                 return NotFound();
             }
 
-            _questionRepository.DeleteResponseOption(id, questionId);
+            QuestionRepository.DeleteResponseOption(id, questionId);
             return StatusCode(HttpStatusCode.NoContent);
         }
-
-
     }
 }

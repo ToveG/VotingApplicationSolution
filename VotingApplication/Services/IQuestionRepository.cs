@@ -15,14 +15,14 @@ namespace VotingApplication.Services
         Question CreateQuestion(Question question);
         Question UpdateQuestion(Question question);
         void DeleteQuestion(int id);
+
         ResponseOption CreateResponseOption(ResponseOption option, int id);
         ResponseOption UpdateResponseOption(ResponseOption option);
         void DeleteResponseOption(int id, int questionId);
 
-        // List<TodoListItem> GetTodoListItems(int todoListId);
-        //TodoListItem GetTodoListItem(int todoListId, int id);
-        //TodoListItem CreateTodoListItem(TodoListItem todoListItem, int todolistId);
-        //TodoListItem UpdateToListItem(TodoListItem todoListItem);
-        //void DeleteTodoListItem(int todoListId, int id);
+        //List<Result> GetAllQuestionResults();
+      //  List<Result> GetSpecificResult(int questionId);
+      //  Result SaveAnswer(Result result);
+
     }
 }

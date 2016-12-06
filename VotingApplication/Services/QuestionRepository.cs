@@ -11,11 +11,6 @@ namespace VotingApplication.Services
     public class QuestionRepository : IQuestionRepository
     {
         private DataContext _ctx = new DataContext();
-
-        //public QuestionRepository()
-        //{
-        //    _ctx = ctx;
-        //}
         
         public List<Question> GetAllQuestions()
         {
@@ -88,20 +83,28 @@ namespace VotingApplication.Services
 
 
 
+        //public Result SaveAnswer(Result result)
+        //{
+        //    _ctx.Results.Add(result);
+        //    _ctx.SaveChanges();
+
+        //    return _ctx.Results.SingleOrDefault(r => r.Id == result.Id);
+        //}
+
+        //public List<Result> GetAllQuestionResults()
+        //{
+
+        //}
+
+        //public List<Result> GetSpecificResult(int questionId)
+        //{
+        //    //    List<Result> results = _ctx.Results.Where(r => r.question.Id == questionId && r.responseOption.Id == responseId).ToList();
+        //    var results = _ctx.Results.Where(r => r.question.Id == questionId).ToList(); 
+        //    return results;
+        //}
 
 
 
-
-
-
-
-
-
-
-
-
-
-        
     }
 
 
