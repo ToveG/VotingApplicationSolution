@@ -17,7 +17,7 @@ namespace VotingApplication.Services
         void DeleteQuestion(int id);
         ResponseOption CreateResponseOption(ResponseOption option, int id);
         ResponseOption UpdateResponseOption(ResponseOption option);
-        void DeleteResponseOption(int id);
+        void DeleteResponseOption(int id, int questionId);
 
         // List<TodoListItem> GetTodoListItems(int todoListId);
         //TodoListItem GetTodoListItem(int todoListId, int id);

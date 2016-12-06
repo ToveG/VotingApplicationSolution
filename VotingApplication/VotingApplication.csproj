@@ -160,7 +160,6 @@
     <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Controllers\ResponseOptionController.cs" />
     <Compile Include="Entities\DataContext.cs" />
-    <Compile Include="Entities\DataContextExtention.cs" />
     <Compile Include="Entities\Question.cs" />
     <Compile Include="Entities\ResponseOption.cs" />
     <Compile Include="Entities\Result.cs" />
@@ -174,6 +173,14 @@
     <Compile Include="Migrations\201612021115082_changes.cs" />
     <Compile Include="Migrations\201612021115082_changes.Designer.cs">
       <DependentUpon>201612021115082_changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612061125249_add.cs" />
+    <Compile Include="Migrations\201612061125249_add.Designer.cs">
+      <DependentUpon>201612061125249_add.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612061208522_addedSeed.cs" />
+    <Compile Include="Migrations\201612061208522_addedSeed.Designer.cs">
+      <DependentUpon>201612061208522_addedSeed.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CreateQuestion.cs" />
@@ -214,6 +221,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612021115082_changes.resx">
       <DependentUpon>201612021115082_changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612061125249_add.resx">
+      <DependentUpon>201612061125249_add.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612061208522_addedSeed.resx">
+      <DependentUpon>201612061208522_addedSeed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

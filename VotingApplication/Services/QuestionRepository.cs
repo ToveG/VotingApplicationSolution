@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using VotingApplication.Entities;
@@ -9,26 +10,21 @@ namespace VotingApplication.Services
 {
     public class QuestionRepository : IQuestionRepository
     {
-        private DataContext _ctx = null;
+        private DataContext _ctx = new DataContext();
 
-        public QuestionRepository( DataContext ctx)
-        {
-            _ctx = ctx;
-        }
+        //public QuestionRepository()
+        //{
+        //    _ctx = ctx;
+        //}
         
         public List<Question> GetAllQuestions()
         {
-            return _ctx.Questions.ToList();
-
-
-          // return _ctx.Questions.Include(q => q.Answers).ToList<>;
-         //   return _ctx.TodoLists.Include(l => l.TodoListItems).ToList();
+            return _ctx.Questions.Include(q => q.Answers).ToList();
         }
 
         public Question GetQuestionById(int id)
         {
-            return _ctx.Questions.SingleOrDefault(q => q.Id == id);
-          //  return _ctx.Questions.Include(q => q.ResponseOptions).SingleOrDefault(q => q.Id == id);
+            return _ctx.Questions.Include(q => q.Answers).SingleOrDefault(q => q.Id == id);
         }
 
 
@@ -81,10 +77,13 @@ namespace VotingApplication.Services
             return _ctx.ResponseOptions.SingleOrDefault(o => o.Id == _option.Id);
         }
 
-        public void DeleteResponseOption(int id)
+        public void DeleteResponseOption(int id, int questionId)
         {
-            var itemToDelete = _ctx.ResponseOptions.SingleOrDefault(o => o.Id == id);
+            var question = GetQuestionById(questionId);
+            var itemToDelete = question.Answers.SingleOrDefault(a => a.Id == id);
             _ctx.ResponseOptions.Remove(itemToDelete);
+
+            _ctx.SaveChanges();
         }
 
 

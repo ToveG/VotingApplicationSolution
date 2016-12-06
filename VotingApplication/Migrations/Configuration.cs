@@ -1,50 +1,64 @@
 namespace VotingApplication.Migrations
 {
+    using Entities;
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<VotingApplication.Models.DataContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<VotingApplication.Entities.DataContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(VotingApplication.Models.DataContext context)
+        protected override void Seed(VotingApplication.Entities.DataContext context)
         {
-            //context.Questions.AddOrUpdate(new Models.Question { status = Models.Status.Active, title = "Vad vill du ha till lunch." });
 
-
-
-            //context.Inventories.AddOrUpdate(new Entities.Inventory { Category = Entities.Category.Övrigt, Ailes = "D", Shelf = 1 });
-
-
-            //context.SaveChanges();
-
-            //if (!context.ResponseOptions.Any(r => r.Id == 1))
-            //{
-            //  //  var store = new UserStore<ApplicationUser>(context);
-            //    //var manager = new UserManager<ApplicationUser>(store);
-            //    //var user = new ApplicationUser() { UserName = "lisa", Email = "lisa@gmail.com" };
-            //    //manager.Create(user, "lisa123");
-            //}
-
-
-
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            context.Questions.Add(new Entities.Question
+            {
+                Title = "Vilken serie är bäst?",
+                Status = true,
+                Answers = new List<ResponseOption>() {
+                    new ResponseOption() {option = "Lost" },
+                    new ResponseOption() { option = "Game of Thrones" }
+                }
+            });
+            context.Questions.Add(new Question
+            {
+                Title = "Är du under 30 år?",
+                Status = false,
+                Answers = new List<ResponseOption>() {
+                        new ResponseOption() {option = "Ja" },
+                        new ResponseOption() { option = "Nej" }
+                }
+            });
+            context.Questions.Add(new Question
+            {
+                Title = "Vad heter Sveriges stadsminister?",
+                Status = true,
+                Answers = new List<ResponseOption>()
+                    {
+                        new ResponseOption() {option = "Stefan Löven" },
+                        new ResponseOption() {option = "Stefan Lövren" }
+                    }
+            });
+            context.SaveChanges();
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+          

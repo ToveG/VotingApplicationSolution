@@ -12,6 +12,19 @@ namespace VotingApplication
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+
+            InitializeAutoMapper();
+        }
+
+        void InitializeAutoMapper()
+        {
+            AutoMapper.Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Entities.Question, Models.Question>();
+                cfg.CreateMap<Models.Question, Entities.Question>();
+                cfg.CreateMap<Entities.ResponseOption, Models.ResponseOption>();
+                cfg.CreateMap<Models.ResponseOption, Entities.ResponseOption>();
+            });
         }
     }
 }

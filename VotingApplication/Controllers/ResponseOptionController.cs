@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using VotingApplication.Entities;
 using VotingApplication.Models;
 using VotingApplication.Services;
 
@@ -12,12 +13,21 @@ namespace VotingApplication.Controllers
 {
     public class ResponseOptionController : ApiController
     {
-        private IQuestionRepository _questionRepository;
+        private IQuestionRepository _questionRepository = null;
+        private DataContext ctx = new DataContext();
 
-        public ResponseOptionController(IQuestionRepository questionRepository)
+        public IQuestionRepository QuestionRepository
         {
-            _questionRepository = questionRepository;
+            get
+            {
+                if (_questionRepository == null)
+                    _questionRepository = new QuestionRepository();
+
+                return _questionRepository;
+            }
+            set { _questionRepository = value; }
         }
+
 
         //[Route("{questionId}/responseOption")]
         //[HttpGet()]
@@ -63,7 +73,7 @@ namespace VotingApplication.Controllers
         //    }
         //}
 
-        [Route("{questionId}/responseOptions")]
+        [Route("api/questions/{questionId}/responseOptions")]
         [HttpPost]
         public IHttpActionResult CreateResponseOption(int questionId,
            [FromBody] CreateResponseOption responseOption)
@@ -77,19 +87,19 @@ namespace VotingApplication.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var question = _questionRepository.GetQuestionById(questionId);
+            var question = QuestionRepository.GetQuestionById(questionId);
 
             if (question == null)
             {
                 return NotFound();
             }
 
-            var itemToInsert = new ResponseOption()
+            var itemToInsert = new Models.ResponseOption()
             {
                 option = responseOption.option
             };
 
-            var item = _questionRepository.CreateResponseOption(Mapper.Map<Entities.ResponseOption>(responseOption), questionId);
+            var item = QuestionRepository.CreateResponseOption(Mapper.Map<Entities.ResponseOption>(itemToInsert), questionId);
 
             return Created("GetResponseOption", Mapper.Map<Models.ResponseOption>(item));
         }
@@ -116,67 +126,68 @@ namespace VotingApplication.Controllers
 
             _questionRepository.UpdateResponseOption(Mapper.Map<Entities.ResponseOption>(responseOption));
 
-            if (responseOptionToUpdate == null)
-                return NotFound();
+            //if (responseOptionToUpdate == null)
+            //    return NotFound();
 
-            responseOptionToUpdate.option = responseOption.option;
+            //responseOptionToUpdate.option = responseOption.option;
 
-            _questionRepository.UpdateToListItem(responseOptionToUpdate);
-            return NoContent();
+            //_questionRepository.UpdateToListItem(responseOptionToUpdate);
+            //return NoContent();
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        [Route("{questionId}/responseOption/{id}")]
-        [HttpPatch()]
-        public IHttpActionResult PartiallyUpdateresponseOption(int questionId, int id,
-          [FromBody] JsonPatchDocument<CreateResponseOption> patchDoc)
-        {
-            if (patchDoc == null)
-            {
-                return BadRequest();
-            }
+        //[Route("{questionId}/responseOption/{id}")]
+        //[HttpPatch()]
+        //public IHttpActionResult PartiallyUpdateresponseOption(int questionId, int id,
+        //  [FromBody] JsonPatchDocument<CreateResponseOption> patchDoc)
+        //{
+        //    if (patchDoc == null)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            var question = _questionRepository.GetQuestionById(questionId);
-            if (question == null)
-            {
-                return NotFound();
-            }
+        //    var question = _questionRepository.GetQuestionById(questionId);
+        //    if (question == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var responseOption = _questionRepository.GetResponseOption(id, questionId);
-            if (responseOption == null)
-            {
-                return NotFound();
-            }
+        //    var responseOption = _questionRepository.GetResponseOption(id, questionId);
+        //    if (responseOption == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var responseOptionToPatch =
-                   new CreateResponseOption()
-                   {
-                       option = responseOption.option
-                   };
+        //    var responseOptionToPatch =
+        //           new CreateResponseOption()
+        //           {
+        //               option = responseOption.option
+        //           };
 
-            patchDoc.ApplyTo(responseOptionToPatch, ModelState);
+        //    patchDoc.ApplyTo(responseOptionToPatch, ModelState);
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            //if (responseOptionToPatch.Description == todoListItemToPatch.Title)
-            //{
-            //    ModelState.AddModelError("Description", "The provided description should be different from the name.");
-            //}
+        //    //if (responseOptionToPatch.Description == todoListItemToPatch.Title)
+        //    //{
+        //    //    ModelState.AddModelError("Description", "The provided description should be different from the name.");
+        //    //}
 
-            TryValidateModel(responseOptionToPatch);
+        //    TryValidateModel(responseOptionToPatch);
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            responseOption.option = responseOptionToPatch.option;
+        //    responseOption.option = responseOptionToPatch.option;
 
-            _questionRepository.UpdateToListItem(responseOption);
-            return NoContent();
-        }
+        //    _questionRepository.UpdateToListItem(responseOption);
+        //    return NoContent();
+        //}
 
         [Route("{questionId}/responseoptions/{id}")]
         [HttpDelete()]
@@ -190,7 +201,7 @@ namespace VotingApplication.Controllers
             }
 
             _questionRepository.DeleteResponseOption(id, questionId);
-            return NoContent();
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
 
