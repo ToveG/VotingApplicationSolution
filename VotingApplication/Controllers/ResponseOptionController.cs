@@ -12,53 +12,56 @@ namespace VotingApplication.Controllers
 {
     public class ResponseOptionController : ApiController
     {
-        QuestionRepository _questionRepository = new QuestionRepository();
+        private IQuestionRepository _questionRepository;
 
-        [Route("{questionId}/responseOption")]
-        [HttpGet()]
-        public IHttpActionResult GetResponseOptions(int questionId)
+        public ResponseOptionController(IQuestionRepository questionRepository)
         {
-            try
-            {
-                var questionEntities = _questionRepository.GetResponseOptions(questionId);
-
-                if (questionEntities == null)
-                {
-                    //_logger.LogInformation($"Todolist with id {todoListId} wasn't found");
-                    return NotFound();
-                }
-
-                return Ok(Mapper.Map<IEnumerable<Models.Question>>(questionEntities));
-            }
-            catch (Exception ex)
-            {
-              //  _logger.LogCritical($"Exception while getting todolist item with id {todoListId}", ex);
-                return StatusCode(500, "A problem occured.");
-            }
+            _questionRepository = questionRepository;
         }
-        [Route("{questionId}/responseOption/{id}", Name = "GetResponseOptions")]
-        [HttpGet]
-        public IHttpActionResult GetResponseOptions(int questionId, int id)
-        {
-            try
-            {
-                var question = _questionRepository.GetQuestionById(questionId);
 
-                if (question == null)
-                {
-                    return NotFound();
-                }
-                var response = _questionRepository.GetResponseOption(id, questionId);
-                if (response == null)
-                    return NotFound();
+        //[Route("{questionId}/responseOption")]
+        //[HttpGet()]
+        //public IHttpActionResult GetResponseOptions(int questionId)
+        //{
+        //    try
+        //    {
+        //        var questionEntities = _questionRepository.GetResponseOptions(questionId);
 
-                return Ok(Mapper.Map<Models.ResponseOption>(response));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "A problem occured.");
-            }
-        }
+        //        if (questionEntities == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        return Ok(Mapper.Map<IEnumerable<Models.Question>>(questionEntities));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //          return StatusCode(HttpStatusCode.BadRequest);
+        //    }
+        //}
+        //[Route("{questionId}/responseOption/{id}", Name = "GetResponseOptions")]
+        //[HttpGet]
+        //public IHttpActionResult GetResponseOptions(int questionId, int id)
+        //{
+        //    try
+        //    {
+        //        var question = _questionRepository.GetQuestionById(questionId);
+
+        //        if (question == null)
+        //        {
+        //            return NotFound();
+        //        }
+        //        var response = _questionRepository.GetResponseOption(id, questionId);
+        //        if (response == null)
+        //            return NotFound();
+
+        //        return Ok(Mapper.Map<Models.ResponseOption>(response));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, "A problem occured.");
+        //    }
+        //}
 
         [Route("{questionId}/responseOptions")]
         [HttpPost]
@@ -69,11 +72,6 @@ namespace VotingApplication.Controllers
             {
                 return BadRequest();
             }
-
-            //if (todoListItem.Description == todoListItem.Title)
-            //{
-            //    ModelState.AddModelError("Description", "The provided description should be different from the title.");
-            //}
 
             if (!ModelState.IsValid)
             {
@@ -91,11 +89,10 @@ namespace VotingApplication.Controllers
                 option = responseOption.option
             };
 
-            var item = _questionRepository.CreateResponseOption(Mapper.Map<Entities.ResponseOption>(itemToInsert), questionId);
+            var item = _questionRepository.CreateResponseOption(Mapper.Map<Entities.ResponseOption>(responseOption), questionId);
 
-            return CreatedAtRoute("GetResponseOption", Mapper.Map<Models.ResponseOption>(item));
+            return Created("GetResponseOption", Mapper.Map<Models.ResponseOption>(item));
         }
-
 
         [Route("{questionId}/responseOption/{id}")]
         [HttpPut()]
@@ -107,11 +104,6 @@ namespace VotingApplication.Controllers
                 return BadRequest();
             }
 
-            //if (todoListItem.Description == todoListItem.Title)
-            //{
-            //    ModelState.AddModelError("Description", "The provided description should be different from the title.");
-            //}
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -122,7 +114,7 @@ namespace VotingApplication.Controllers
                 return NotFound();
             }
 
-            var responseOptionToUpdate = _questionRepository.GetResponseOption(id, questionId);
+            _questionRepository.UpdateResponseOption(Mapper.Map<Entities.ResponseOption>(responseOption));
 
             if (responseOptionToUpdate == null)
                 return NotFound();

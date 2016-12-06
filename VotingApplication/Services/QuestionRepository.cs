@@ -15,56 +15,95 @@ namespace VotingApplication.Services
         {
             _ctx = ctx;
         }
-
-        public List<Question> GetQuestions()
+        
+        public List<Question> GetAllQuestions()
         {
-            return _ctx.Questions.Include(q => q.ResponseOptions).ToList<>;
+            return _ctx.Questions.ToList();
+
+
+          // return _ctx.Questions.Include(q => q.Answers).ToList<>;
          //   return _ctx.TodoLists.Include(l => l.TodoListItems).ToList();
         }
 
         public Question GetQuestionById(int id)
         {
-            return _ctx.Questions.Include(q => q.ResponseOptions).SingleOrDefault(q => q.Id == id);
+            return _ctx.Questions.SingleOrDefault(q => q.Id == id);
+          //  return _ctx.Questions.Include(q => q.ResponseOptions).SingleOrDefault(q => q.Id == id);
         }
 
-        public List<ResponseOption> GetResonseOptions(int questionId)
+
+        public List<Question> GetQuestionsWithSpecificStatus(bool status)
         {
-            return _ctx.ResponseOptions.Where(q => q.questionId == questionId).ToList();
-           // return _ctx.TodoListItems.Where(l => l.TodoListId == todoListId).ToList();
+            return _ctx.Questions.Where(q => q.Status == status).ToList();
         }
 
-        public ResponseOption GetResponseOptions(int id, int questionId)
+        public Question CreateQuestion(Question _question)
         {
-            var question = GetQuestionById(questionId);
-            var responseItem = question.Answers.SingleOrDefault(i => i.Id == id);
-
-            return responseItem;
-        }
-
-        public ResponseOption CreateResponseOption(ResponseOption responseOption, int questionId)
-        {
-            responseOption.questionId = questionId;
-            var responseItem = _ctx.ResponseOptions.Add(responseOption);
+            var question = _ctx.Questions.Add(_question);
             _ctx.SaveChanges();
-            return _ctx.ResponseOptions.SingleOrDefault(r => r.Id == responseItem.Id);
+            return _ctx.Questions.SingleOrDefault(q => q.Id == question.Id);
         }
 
-        public ResponseOption UpdateToListItem(ResponseOption responseOption)
+        public Question UpdateQuestion(Question _question)
         {
-            var resorseItem = _ctx.ResponseOptions.Update(resorseItem);
+            var question = _ctx.Questions.SingleOrDefault(q => q.Id == _question.Id);
+
+            question.Title = _question.Title;
+            question.Status = _question.Status;
+
             _ctx.SaveChanges();
-            return _ctx.ResponseOptions.SingleOrDefault(r => r.Id == resorseItem.Entity.Id);
+            return _ctx.Questions.SingleOrDefault(q => q.Id == question.Id);
         }
 
-        public void DeleteResponseOption(int id, int questionId)
+        public void DeleteQuestion(int id)
         {
-            var question = GetQuestionById(questionId);
-            var itemToDelete = question.Answers.SingleOrDefault(a => a.Id == id);
+            var itemToDelete = GetQuestionById(id);
+            _ctx.Questions.Remove(itemToDelete);
+            _ctx.SaveChanges();
+        }
+
+
+        public ResponseOption CreateResponseOption(ResponseOption option, int questionId)
+        {
+            option.questionId = questionId;
+            var _option = _ctx.ResponseOptions.Add(option);
+            _ctx.SaveChanges();
+            return _ctx.ResponseOptions.SingleOrDefault(o => o.Id == _option.Id);
+        }
+
+        public ResponseOption UpdateResponseOption(ResponseOption option)
+        {
+            var _option = _ctx.ResponseOptions.SingleOrDefault(o => o.Id == option.Id);
+
+            _option.option = option.option;
+
+            _ctx.SaveChanges();
+            return _ctx.ResponseOptions.SingleOrDefault(o => o.Id == _option.Id);
+        }
+
+        public void DeleteResponseOption(int id)
+        {
+            var itemToDelete = _ctx.ResponseOptions.SingleOrDefault(o => o.Id == id);
             _ctx.ResponseOptions.Remove(itemToDelete);
-            _ctx.SaveChanges();
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
     }
 
 
-}
 }
