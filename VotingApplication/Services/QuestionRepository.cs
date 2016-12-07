@@ -25,7 +25,7 @@ namespace VotingApplication.Services
 
         public List<Question> GetQuestionsWithSpecificStatus(bool status)
         {
-            return _ctx.Questions.Where(q => q.Status == status).ToList();
+            return _ctx.Questions.Where(q => q.Status == status).Include(q => q.Answers).ToList();
         }
 
         public Question CreateQuestion(Question _question)
@@ -37,13 +37,9 @@ namespace VotingApplication.Services
 
         public Question UpdateQuestion(Question _question)
         {
-            var question = _ctx.Questions.SingleOrDefault(q => q.Id == _question.Id);
-
-            question.Title = _question.Title;
-            question.Status = _question.Status;
-
+         
             _ctx.SaveChanges();
-            return _ctx.Questions.SingleOrDefault(q => q.Id == question.Id);
+            return _ctx.Questions.SingleOrDefault(q => q.Id == _question.Id);
         }
 
         public void DeleteQuestion(int id)
@@ -51,6 +47,14 @@ namespace VotingApplication.Services
             var itemToDelete = GetQuestionById(id);
             _ctx.Questions.Remove(itemToDelete);
             _ctx.SaveChanges();
+        }
+
+        public ResponseOption GetOptionById(int id, int questionId)
+        {
+            var question = GetQuestionById(questionId);
+            var responseOption = question.Answers.SingleOrDefault(a => a.Id == id);
+
+            return responseOption;
         }
 
 
@@ -80,6 +84,8 @@ namespace VotingApplication.Services
 
             _ctx.SaveChanges();
         }
+
+        
 
 
 

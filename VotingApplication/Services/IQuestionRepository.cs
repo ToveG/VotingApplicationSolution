@@ -16,6 +16,7 @@ namespace VotingApplication.Services
         Question UpdateQuestion(Question question);
         void DeleteQuestion(int id);
 
+        ResponseOption GetOptionById(int id, int questionId);
         ResponseOption CreateResponseOption(ResponseOption option, int id);
         ResponseOption UpdateResponseOption(ResponseOption option);
         void DeleteResponseOption(int id, int questionId);

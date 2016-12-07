@@ -14,7 +14,6 @@ namespace VotingApplication.Controllers
    [Route("api/questions")]
     public class QuestionController : ApiController
     {
-
         private IQuestionRepository _questionRepository = null;
         private DataContext ctx = new DataContext();
 
@@ -53,7 +52,6 @@ namespace VotingApplication.Controllers
             return Ok(Mapper.Map<Models.Question>(questionEntity));
         }
 
-        //Funkar inte, mapping?
         [Route("api/questions/status/{status}")]
         [HttpGet]
         public IHttpActionResult GetQuestionByStatus(bool status)
@@ -64,10 +62,9 @@ namespace VotingApplication.Controllers
                 return NotFound();
             }
 
-            return Ok(Mapper.Map<Models.Question>(questionEntities));
+            return Ok(Mapper.Map<IEnumerable<Models.Question>>(questionEntities));
         }
 
-        //Funkar
         [Route("api/questions")]
         [HttpPost]
         public IHttpActionResult CreateQuestion(
@@ -95,28 +92,37 @@ namespace VotingApplication.Controllers
             return Created("GetTodoListItem", Mapper.Map<Models.Question>(item));
         }
 
-        //Problem med mapping
         [Route("api/questions/{id}")]
         [HttpPut]
-        public IHttpActionResult UpdateQuestion(
+        public IHttpActionResult UpdateQuestion(int id,
           [FromBody] CreateQuestion question)
         {
             if (question == null)
             {
                 return BadRequest();
             }
-           
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            QuestionRepository.UpdateQuestion(Mapper.Map<Entities.Question>(question));
+            var questionToUpdate = QuestionRepository.GetQuestionById(id);
 
+            if (questionToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            questionToUpdate.Title = question.Title;
+            questionToUpdate.Status = question.Status;
+
+            _questionRepository.UpdateQuestion(questionToUpdate);
+            
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        //Funkar
+       
         [Route("api/questions/{id}")]
         [HttpDelete]
         public IHttpActionResult DeleteQuestion(int id)
