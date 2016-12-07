@@ -28,7 +28,6 @@ namespace VotingApplication.Controllers
             set { _questionRepository = value; }
         }
         
-        //Funkar
         [Route("api/questions/{questionId}/responseOptions")]
         [HttpPost]
         public IHttpActionResult CreateResponseOption(int questionId,
@@ -60,7 +59,6 @@ namespace VotingApplication.Controllers
             return Created("GetResponseOption", Mapper.Map<Models.ResponseOption>(item));
         }
 
-        //Fungerar
         [Route("api/questions/{questionId}/responseOptions/{id}")]
         [HttpPut()]
         public IHttpActionResult UpdateResponseOption(int questionId, int id,
