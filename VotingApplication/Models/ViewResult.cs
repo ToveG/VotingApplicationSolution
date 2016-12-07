@@ -10,10 +10,10 @@ namespace VotingApplication.Models
         public string question { get; set; }
         public string option1 { get; set; }
         public string option2 { get; set; }
-        public int countOption1 { get; set; }
-        public int countOption2 { get; set; }
-        public int procentOption1 { get; set; }
-        public int procentOption2 { get; set; }
+        public double countOption1 { get; set; }
+        public double countOption2 { get; set; }
+        public string procentOption1 { get; set; }
+        public string procentOption2 { get; set; }
 
     }
 }

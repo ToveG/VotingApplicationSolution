@@ -183,6 +183,14 @@
     <Compile Include="Migrations\201612061208522_addedSeed.Designer.cs">
       <DependentUpon>201612061208522_addedSeed.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612071940493_addedviewResult.cs" />
+    <Compile Include="Migrations\201612071940493_addedviewResult.Designer.cs">
+      <DependentUpon>201612071940493_addedviewResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612072020343_changesInviewResult.cs" />
+    <Compile Include="Migrations\201612072020343_changesInviewResult.Designer.cs">
+      <DependentUpon>201612072020343_changesInviewResult.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CreateQuestion.cs" />
     <Compile Include="Models\CreateResponseOption.cs" />
@@ -229,6 +237,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612061208522_addedSeed.resx">
       <DependentUpon>201612061208522_addedSeed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612071940493_addedviewResult.resx">
+      <DependentUpon>201612071940493_addedviewResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612072020343_changesInviewResult.resx">
+      <DependentUpon>201612072020343_changesInviewResult.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

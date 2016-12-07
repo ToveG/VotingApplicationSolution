@@ -36,26 +36,55 @@ namespace VotingApplication.Controllers
         //    return Ok(Mapper.Map<IEnumerable<Models.Result>>(questionResults));
         //}
 
-        //[Route("api/questions/{id}/resultone/{optionId}/resulttwo/{secondOptionId}")]
-        //[Route("api/results/{id}")]
-        //[HttpGet]
-        //public IHttpActionResult GetSpecificResult(int id)
-        //{
-        //    var allAnswers = QuestionRepository.GetSpecificResult(id);
+//lägg till try så att den inte pangar om jag förösker kolla resultat på en fråga som ingen svarat på än.
+//den borde kanske säga NoContent istället. 
+//borde kanske också flytta över hela groupby grejen till repositoryt...? 
 
-        //    var grouped = allAnswers.GroupBy(a => a.responseOption.option.ToLower()).ToArray();
-        //    var totalAnswers = allAnswers.Count();
-        //    var optionOne = allAnswers.Where(a => a.responseOption.Id == optionId).ToList().Count();
-        //    var optionTwo = allAnswers.Where(a => a.responseOption.Id == secondOptionId).ToList().Count();
+            [Route("api/result/question/{id}")]
+            [HttpGet]
+            public IHttpActionResult GetResultForSpecificQuestion(int id)
+        {
+            var question = QuestionRepository.GetQuestionById(id);
+            if(question == null)
+            {
+                return StatusCode(HttpStatusCode.NotFound);
+            }
 
-        //    var procentOptionOne = optionOne / totalAnswers * 100;
-        //    var procentOptionTwo = optionTwo / totalAnswers * 100;
+            var allAnswers = QuestionRepository.GetSpecificResult(id);
+            
+            var resultsCount = allAnswers.GroupBy(a => a.responseOption).
+                Select(group =>
+                new
+                {
+                  Name = group.Key,
+             //     Notice = group.ToList(),
+                    Count = group.Count()
+                }).ToArray();
 
-        //    //Models.ViewResult viewResult = new Models.ViewResult();
-        //    //viewResult.question == 
+            double totalAnswers = allAnswers.Count;
+            double resultOne = resultsCount[0].Count;
+            double resultTwo = resultsCount[1].Count;
 
-        //    return Ok();
-        //}
+            var name = resultsCount[0].Name;
+
+            var procent = 100;
+            double optionOneInProcent = Math.Round((resultOne / totalAnswers) * procent);
+            double optionTwoInProcent = Math.Round((resultTwo / totalAnswers) * procent);
+
+            ViewResult viewResult = new ViewResult();
+            viewResult.question = question.Title; 
+            viewResult.option1 = resultsCount[0].Name.option.ToString();
+            viewResult.option2 = resultsCount[1].Name.option.ToString();
+            viewResult.procentOption1 = optionOneInProcent + " %";
+            viewResult.procentOption2 = optionTwoInProcent + " %";
+            viewResult.countOption1 = resultOne;
+            viewResult.countOption2 = resultTwo;
+
+            return Ok(viewResult);
+
+
+        }
+        
 
         [Route("api/question/{questionId}/result/{optionId}")]
         [HttpPost]

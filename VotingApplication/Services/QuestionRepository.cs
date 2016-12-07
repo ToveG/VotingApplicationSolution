@@ -102,12 +102,14 @@ namespace VotingApplication.Services
 
         //}
 
-        //public List<Result> GetSpecificResult(int questionId)
-        //{
-        //    //    List<Result> results = _ctx.Results.Where(r => r.question.Id == questionId && r.responseOption.Id == responseId).ToList();
-        //    var results = _ctx.Results.Where(r => r.question.Id == questionId).ToList(); 
-        //    return results;
-        //}
+        public List<Result> GetSpecificResult(int questionId)
+        {
+            //    List<Result> results = _ctx.Results.Where(r => r.question.Id == questionId && r.responseOption.Id == responseId).ToList();
+            var results = _ctx.Results.Where(r => r.question.Id == questionId).Include(r => r.responseOption).Include(r => r.question).ToList();
+
+            //  return _ctx.Questions.Where(q => q.Status == status).Include(q => q.Answers).ToList();
+            return results;
+        }
 
 
 

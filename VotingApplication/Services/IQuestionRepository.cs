@@ -22,7 +22,7 @@ namespace VotingApplication.Services
         void DeleteResponseOption(int id, int questionId);
 
         //List<Result> GetAllQuestionResults();
-      //  List<Result> GetSpecificResult(int questionId);
+            List<Result> GetSpecificResult(int questionId);
          Result SaveAnswer(Result result);
 
     }
