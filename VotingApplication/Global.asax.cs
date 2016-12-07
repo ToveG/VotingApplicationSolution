@@ -24,6 +24,8 @@ namespace VotingApplication
                 cfg.CreateMap<Models.Question, Entities.Question>();
                 cfg.CreateMap<Entities.ResponseOption, Models.ResponseOption>();
                 cfg.CreateMap<Models.ResponseOption, Entities.ResponseOption>();
+                cfg.CreateMap<Entities.Result, Models.Result>();
+                cfg.CreateMap<Models.Result, Entities.Result>();
             });
         }
     }

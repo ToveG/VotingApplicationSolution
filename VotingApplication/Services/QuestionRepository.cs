@@ -85,17 +85,17 @@ namespace VotingApplication.Services
             _ctx.SaveChanges();
         }
 
-        
 
 
 
-        //public Result SaveAnswer(Result result)
-        //{
-        //    _ctx.Results.Add(result);
-        //    _ctx.SaveChanges();
 
-        //    return _ctx.Results.SingleOrDefault(r => r.Id == result.Id);
-        //}
+        public Result SaveAnswer(Result result)
+        {
+            _ctx.Results.Add(result);
+            _ctx.SaveChanges();
+
+            return _ctx.Results.SingleOrDefault(r => r.Id == result.Id);
+        }
 
         //public List<Result> GetAllQuestionResults()
         //{

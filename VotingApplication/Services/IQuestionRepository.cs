@@ -23,7 +23,7 @@ namespace VotingApplication.Services
 
         //List<Result> GetAllQuestionResults();
       //  List<Result> GetSpecificResult(int questionId);
-      //  Result SaveAnswer(Result result);
+         Result SaveAnswer(Result result);
 
     }
 }

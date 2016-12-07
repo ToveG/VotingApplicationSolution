@@ -36,7 +36,7 @@ namespace VotingApplication.Controllers
         //    return Ok(Mapper.Map<IEnumerable<Models.Result>>(questionResults));
         //}
 
-        // [Route("api/questions/{id}/resultone/{optionId}/resulttwo/{secondOptionId}")]
+        //[Route("api/questions/{id}/resultone/{optionId}/resulttwo/{secondOptionId}")]
         //[Route("api/results/{id}")]
         //[HttpGet]
         //public IHttpActionResult GetSpecificResult(int id)
@@ -44,31 +44,40 @@ namespace VotingApplication.Controllers
         //    var allAnswers = QuestionRepository.GetSpecificResult(id);
 
         //    var grouped = allAnswers.GroupBy(a => a.responseOption.option.ToLower()).ToArray();
-        //    //    var totalAnswers= allAnswers.Count();
-        //    //    var optionOne = allAnswers.Where(a => a.responseOption.Id == optionId).ToList().Count();
-        //    //    var optionTwo = allAnswers.Where(a => a.responseOption.Id == secondOptionId).ToList().Count();
+        //    var totalAnswers = allAnswers.Count();
+        //    var optionOne = allAnswers.Where(a => a.responseOption.Id == optionId).ToList().Count();
+        //    var optionTwo = allAnswers.Where(a => a.responseOption.Id == secondOptionId).ToList().Count();
 
-        //    //    var procentOptionOne = optionOne / totalAnswers * 100;
-        //    //    var procentOptionTwo = optionTwo / totalAnswers * 100;
+        //    var procentOptionOne = optionOne / totalAnswers * 100;
+        //    var procentOptionTwo = optionTwo / totalAnswers * 100;
 
-        //    //    //Models.ViewResult viewResult = new Models.ViewResult();
-        //    //    //viewResult.question == 
+        //    //Models.ViewResult viewResult = new Models.ViewResult();
+        //    //viewResult.question == 
 
-        //        return Ok();
-        //    }
+        //    return Ok();
+        //}
 
-        ////[Route("api/{questionId}/result/{responseOptionId}")]
-        ////[HttpPost]
-        ////public IHttpActionResult SaveSelectedAnswer(int questionId, 
-        ////    int optionId)
-        ////    //[FromBody] Models.Result result )
-        ////{
-           
+        [Route("api/question/{questionId}/result/{optionId}")]
+        [HttpPost]
+        public IHttpActionResult SaveSelectedAnswer(int questionId,
+            int optionId)
+        {
+            var question = QuestionRepository.GetQuestionById(questionId);
+            if(question == null)
+            {
+                return NotFound();
+            }
 
-        ////    var item = QuestionRepository.SaveAnswer(Mapper.Map<Entities.Result>(itemToInsert));
+            var option = QuestionRepository.GetOptionById(optionId, questionId);
 
-        ////    return Created("AnswerSaved", Mapper.Map<Models.Result>(item));
-        ////}
+            Entities.Result result = new Entities.Result();
+            result.question = question;
+            result.responseOption = option;
+
+            QuestionRepository.SaveAnswer(result);            
+
+            return Created("AnswerSaved", Mapper.Map<Models.Result>(result));
+        }
 
 
 
@@ -89,14 +98,14 @@ namespace VotingApplication.Controllers
         //    {
         //        return NotFound();
         //    }
-            
+
         //    QuestionRepository.SaveAnswer(questionId, optionId);
         //    return StatusCode(HttpStatusCode.NoContent);
         //}
-        
-
-        }
 
 
     }
+
+
+}
 
