@@ -27,14 +27,6 @@ namespace VotingApplication.Controllers
             }
             set { _questionRepository = value; }
         }
-
-        //[Route("api/result")]
-        //[HttpGet]
-        //public IHttpActionResult Get()
-        //{
-        //    var questionResults = QuestionRepository.GetAllQuestionResults();
-        //    return Ok(Mapper.Map<IEnumerable<Models.Result>>(questionResults));
-        //}
         
             [Route("api/result")]
             [HttpGet]

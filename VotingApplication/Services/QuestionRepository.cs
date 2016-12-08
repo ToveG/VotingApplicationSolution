@@ -5,7 +5,6 @@ using System.Linq;
 using System.Web;
 using VotingApplication.Entities;
 
-
 namespace VotingApplication.Services
 {
     public class QuestionRepository : IQuestionRepository
@@ -57,7 +56,6 @@ namespace VotingApplication.Services
             return responseOption;
         }
 
-
         public ResponseOption CreateResponseOption(ResponseOption option, int questionId)
         {
             option.questionId = questionId;
@@ -85,10 +83,6 @@ namespace VotingApplication.Services
             _ctx.SaveChanges();
         }
 
-
-
-
-
         public Result SaveAnswer(Result result)
         {
             _ctx.Results.Add(result);
@@ -109,10 +103,5 @@ namespace VotingApplication.Services
 
             return results;
         }
-
-     
-
     }
-
-
 }

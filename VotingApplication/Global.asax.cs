@@ -16,7 +16,7 @@ namespace VotingApplication
             InitializeAutoMapper();
         }
 
-        void InitializeAutoMapper()
+        public static void InitializeAutoMapper()
         {
             AutoMapper.Mapper.Initialize(cfg =>
             {
