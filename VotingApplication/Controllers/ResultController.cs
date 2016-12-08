@@ -35,10 +35,34 @@ namespace VotingApplication.Controllers
         //    var questionResults = QuestionRepository.GetAllQuestionResults();
         //    return Ok(Mapper.Map<IEnumerable<Models.Result>>(questionResults));
         //}
+        
+            [Route("api/result")]
+            [HttpGet]
+            public IHttpActionResult Get()
+        {
+            var questions = QuestionRepository.GetAllQuestions();
+            if (questions == null)
+            {
+                return StatusCode(HttpStatusCode.NoContent);
+            }
 
-//lägg till try så att den inte pangar om jag förösker kolla resultat på en fråga som ingen svarat på än.
-//den borde kanske säga NoContent istället. 
-//borde kanske också flytta över hela groupby grejen till repositoryt...? 
+            List<ViewResultModel> list = new List<ViewResultModel>();
+            foreach(var q in questions)
+            {
+                try
+                {
+                    var result = GetResultForSpecificQuestion(q);
+                    if (result.option1 != null)
+                        list.Add(result);
+                }
+                catch (Exception)
+                {
+                    return StatusCode(HttpStatusCode.NotFound);
+                }
+                
+            }
+            return Ok(list);
+        }
 
             [Route("api/result/question/{id}")]
             [HttpGet]
@@ -51,14 +75,18 @@ namespace VotingApplication.Controllers
             }
 
             var allAnswers = QuestionRepository.GetSpecificResult(id);
-            
+
+            if(allAnswers == null)
+            {
+                return StatusCode(HttpStatusCode.NoContent);
+            }
             var resultsCount = allAnswers.GroupBy(a => a.responseOption).
                 Select(group =>
                 new
                 {
-                  Name = group.Key,
-             //     Notice = group.ToList(),
+                    Name = group.Key,
                     Count = group.Count()
+                    
                 }).ToArray();
 
             double totalAnswers = allAnswers.Count;
@@ -67,11 +95,11 @@ namespace VotingApplication.Controllers
 
             var name = resultsCount[0].Name;
 
-            var procent = 100;
-            double optionOneInProcent = Math.Round((resultOne / totalAnswers) * procent);
-            double optionTwoInProcent = Math.Round((resultTwo / totalAnswers) * procent);
+            var optionOneInProcent = getResultInProcent(totalAnswers, resultOne);
+            var optionTwoInProcent = getResultInProcent(totalAnswers, resultTwo);
 
-            ViewResult viewResult = new ViewResult();
+            ViewResultModel viewResult = new ViewResultModel();
+
             viewResult.question = question.Title; 
             viewResult.option1 = resultsCount[0].Name.option.ToString();
             viewResult.option2 = resultsCount[1].Name.option.ToString();
@@ -81,8 +109,6 @@ namespace VotingApplication.Controllers
             viewResult.countOption2 = resultTwo;
 
             return Ok(viewResult);
-
-
         }
         
 
@@ -96,6 +122,10 @@ namespace VotingApplication.Controllers
             {
                 return NotFound();
             }
+            else if(question.Status == false)
+            {
+                return StatusCode(HttpStatusCode.Forbidden);
+            }
 
             var option = QuestionRepository.GetOptionById(optionId, questionId);
 
@@ -108,16 +138,60 @@ namespace VotingApplication.Controllers
             return Created("AnswerSaved", Mapper.Map<Models.Result>(result));
         }
 
+        private double getResultInProcent(double totalAmount, double partOfTotal)
+        {
+            var result = Math.Round((partOfTotal / totalAmount) * 100);
+            return result;
+        }
 
 
+        public ViewResultModel GetResultForSpecificQuestion(Entities.Question q)
+        {
+         
+            var allAnswers = QuestionRepository.GetSpecificResult(q.Id);
 
+            if (allAnswers == null)
+            {
+                throw new Exception();
+            }
+            var resultsCount = allAnswers.GroupBy(a => a.responseOption).
+                Select(group =>
+                new
+                {
+                    Name = group.Key,
+                    Count = group.Count()
 
+                }).ToArray();
 
+            if (resultsCount.Length == 0)
+            {
+                ViewResultModel emptyViewResult = new ViewResultModel();
 
+                emptyViewResult.question = q.Title;
+                return emptyViewResult;
+            }
 
+            double totalAnswers = allAnswers.Count;
+            double resultOne = resultsCount[0].Count;
+            double resultTwo = resultsCount[1].Count;
 
+            var name = resultsCount[0].Name;
 
+            var optionOneInProcent = getResultInProcent(totalAnswers, resultOne);
+            var optionTwoInProcent = getResultInProcent(totalAnswers, resultTwo);
 
+            ViewResultModel viewResult = new ViewResultModel();
+
+            viewResult.question = q.Title;
+            viewResult.option1 = resultsCount[0].Name.option.ToString();
+            viewResult.option2 = resultsCount[1].Name.option.ToString();
+            viewResult.procentOption1 = optionOneInProcent + " %";
+            viewResult.procentOption2 = optionTwoInProcent + " %";
+            viewResult.countOption1 = resultOne;
+            viewResult.countOption2 = resultTwo;
+
+            return viewResult;
+        }
 
 
 

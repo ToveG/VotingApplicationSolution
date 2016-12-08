@@ -97,21 +97,20 @@ namespace VotingApplication.Services
             return _ctx.Results.SingleOrDefault(r => r.Id == result.Id);
         }
 
-        //public List<Result> GetAllQuestionResults()
-        //{
+        public List<Result> GetAllQuestionResults()
+        {
+            return _ctx.Results.Include(r => r.question).Include(r => r.responseOption).ToList();
 
-        //}
+        }
 
         public List<Result> GetSpecificResult(int questionId)
         {
-            //    List<Result> results = _ctx.Results.Where(r => r.question.Id == questionId && r.responseOption.Id == responseId).ToList();
             var results = _ctx.Results.Where(r => r.question.Id == questionId).Include(r => r.responseOption).Include(r => r.question).ToList();
 
-            //  return _ctx.Questions.Where(q => q.Status == status).Include(q => q.Answers).ToList();
             return results;
         }
 
-
+     
 
     }
 

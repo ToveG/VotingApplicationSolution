@@ -5,7 +5,7 @@ using System.Web;
 
 namespace VotingApplication.Models
 {
-    public class ViewResult
+    public class ViewResultModel
     {
         public string question { get; set; }
         public string option1 { get; set; }

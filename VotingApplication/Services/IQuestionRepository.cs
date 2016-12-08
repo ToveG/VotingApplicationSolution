@@ -21,9 +21,9 @@ namespace VotingApplication.Services
         ResponseOption UpdateResponseOption(ResponseOption option);
         void DeleteResponseOption(int id, int questionId);
 
-        //List<Result> GetAllQuestionResults();
-            List<Result> GetSpecificResult(int questionId);
-         Result SaveAnswer(Result result);
+        List<Result> GetAllQuestionResults();
+        List<Result> GetSpecificResult(int questionId);
+        Result SaveAnswer(Result result);
 
     }
 }

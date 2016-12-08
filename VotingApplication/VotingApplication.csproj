@@ -197,7 +197,7 @@
     <Compile Include="Models\Question.cs" />
     <Compile Include="Models\ResponseOption.cs" />
     <Compile Include="Models\Result.cs" />
-    <Compile Include="Models\ViewResult.cs" />
+    <Compile Include="Models\ViewResultModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IQuestionRepository.cs" />
     <Compile Include="Services\IResponseOptionRepository.cs" />
