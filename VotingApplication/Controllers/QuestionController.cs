@@ -90,6 +90,7 @@ namespace VotingApplication.Controllers
 
             //ingen aning om detta är rätt
             return Created("GetTodoListItem", Mapper.Map<Models.Question>(item));
+         //   return Ok(Mapper.Map<Models.Question>(item));
         }
 
         [Route("api/questions/{id}")]
