@@ -184,23 +184,6 @@ namespace VotingApplication.Controllers
 
             return viewResult;
         }
-
-
-
-        //var question = QuestionRepository.GetQuestionById(questionId);
-
-        //    if (question == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    QuestionRepository.SaveAnswer(questionId, optionId);
-        //    return StatusCode(HttpStatusCode.NoContent);
-        //}
-
-
     }
-
-
 }
 

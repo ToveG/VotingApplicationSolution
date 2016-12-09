@@ -59,61 +59,62 @@ namespace VotingApplication.Tests
         {
             CreateQuestion q = new CreateQuestion { Title = "test_update", Status = true };
 
-            //retunera en statusCode
-            var x = questionController.UpdateQuestion(1,q) as CreatedNegotiatedContentResult<ResponseOption>;
+            questionController.UpdateQuestion(1, q);
 
-            Assert.AreEqual(r.option, x.Content.option);
+            Assert.AreEqual(q.Title, repository.updatedQuestion.Title);
         }
 
-        //[TestMethod]
-        //public void UpdateResponseOption_ShouldCreateAResponseOption()
-        //{
-        //    CreateResponseOption r = new CreateResponseOption { option = "test" };
+        [TestMethod]
+        public void DeleteQuestion_ShouldBeTrue()
+        {
+            questionController.DeleteQuestion(1);
 
-        //    var x = responseOptionController.CreateResponseOption(1, r) as CreatedNegotiatedContentResult<ResponseOption>;
+            Assert.IsTrue(repository.deleted);
+        }
 
-        //    Assert.AreEqual(r.option, x.Content.option);
-        //}
+        [TestMethod]
+        public void DeleteResponseOption_ShouldBeTrue()
+        {
+            responseOptionController.DeleteResponseOption(1,1);
 
+            Assert.IsTrue(repository.deleted);
+        }
 
+        [TestMethod]
+        public void UpdateResponseOption_ShouldCreateAResponseOption()
+        {
+            
+            CreateResponseOption r = new CreateResponseOption { option = "test" };
+            responseOptionController.UpdateResponseOption(1, 1, r);
 
-
+            Assert.AreEqual(r.option, repository.updatedResponse.option);
+        }
 
         [TestMethod]
         public void GetAllResults_ShouldReturn2Results()
         {
-            var x = resultController.Get() as OkNegotiatedContentResult<IEnumerable<Result>>;
+            var x = resultController.Get() as OkNegotiatedContentResult<List<ViewResultModel>>;
 
-            Assert.AreEqual(2, new List<Result>(x.Content).Count);
+            Assert.AreEqual(1, new List<ViewResultModel>(x.Content).Count);
         }
-
-
-
-
 
         [TestMethod]
-        public void DeleteQuestion_ShouldReturnNull()
+        public void GetResultsForSpecificQuestion_ShouldNotBeNull()
         {
-            //OkNegotiatedContentResult<Question> noQuestionExpected = null;
-            //CreateQuestion q = new CreateQuestion { Title = "test", Status = true };
-            //var _q = questionController.CreateQuestion(q) as OkNegotiatedContentResult<Question>;
-            //var getQuestion = questionController.GetSpecificQuestion(_q.Content.Id) as OkNegotiatedContentResult<Question>;
-            //if(getQuestion != null)
-            //{
-            //    questionController.DeleteQuestion(getQuestion.Content.Id);
-            //    noQuestionExpected = questionController.GetSpecificQuestion(getQuestion.Content.Id) as OkNegotiatedContentResult<Question>;
-            //}
+            var x = resultController.GetResultForSpecificQuestion(1) as OkNegotiatedContentResult<ViewResultModel>;
 
-            //Assert.IsNull(noQuestionExpected);
+            Assert.IsNotNull(x.Content.countOption1);
         }
 
+        [TestMethod]
+        public void SaveResults_ShouldReturn1ResultsWithId1()
+        {
+            Result r = new Result { question =  new Question { Id = 1} };
 
+            var x = resultController.SaveSelectedAnswer(1, 1) as CreatedNegotiatedContentResult<Result>;
 
-        
-
-
-
-
+            Assert.AreEqual(r.question.Id, x.Content.question.Id);
+        }
 
         [TestInitialize]
         public void BeforeEachTest()
@@ -122,11 +123,14 @@ namespace VotingApplication.Tests
             questionController = new QuestionController();
             resultController = new ResultController();
             responseOptionController = new ResponseOptionController();
-            responseOptionController.QuestionRepository = new TestQuestionRepository();
-            resultController.QuestionRepository = new TestQuestionRepository();
-            questionController.QuestionRepository = new TestQuestionRepository();
+
+            repository = new TestQuestionRepository();
+            responseOptionController.QuestionRepository = repository;
+            resultController.QuestionRepository = repository;
+            questionController.QuestionRepository = repository;
         }
 
+        TestQuestionRepository repository;
         QuestionController questionController;
         ResponseOptionController responseOptionController;
         ResultController resultController;

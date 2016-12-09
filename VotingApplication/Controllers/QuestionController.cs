@@ -88,9 +88,7 @@ namespace VotingApplication.Controllers
 
             var item = QuestionRepository.CreateQuestion(Mapper.Map<Entities.Question>(itemToInsert));
 
-            //ingen aning om detta är rätt
-            return Created("GetTodoListItem", Mapper.Map<Models.Question>(item));
-         //   return Ok(Mapper.Map<Models.Question>(item));
+            return Created("Created", Mapper.Map<Models.Question>(item));
         }
 
         [Route("api/questions/{id}")]
@@ -118,7 +116,7 @@ namespace VotingApplication.Controllers
             questionToUpdate.Title = question.Title;
             questionToUpdate.Status = question.Status;
 
-            _questionRepository.UpdateQuestion(questionToUpdate);
+            QuestionRepository.UpdateQuestion(questionToUpdate);
             
             return StatusCode(HttpStatusCode.NoContent);
         }

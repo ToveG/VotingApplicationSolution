@@ -10,6 +10,7 @@ namespace VotingApplication.Tests
 {
     public class TestQuestionRepository : IQuestionRepository
     {
+
         public List<Question> GetAllQuestions()
         {
             var testQuestions = new List<Question>();
@@ -21,7 +22,22 @@ namespace VotingApplication.Tests
 
         public Question GetQuestionById(int id)
         {
-            return new Question { Id = id, Title = "Question", Status = true };
+            var testQuestions = new List<Question>();
+            testQuestions.Add(new Question { Id = 1, Title = "Question1", Status = true });
+            testQuestions.Add(new Question { Id = 2, Title = "Question1", Status = false });
+
+            var q = testQuestions.FirstOrDefault(x => x.Id == id);
+            return q;
+        }
+
+        public ResponseOption GetOptionById(int id, int questionId)
+        {
+            var testOptions = new List<ResponseOption>();
+            testOptions.Add(new ResponseOption { Id = 1, option = "Option1" });
+            testOptions.Add(new ResponseOption { Id = 2, option = "Option2" });
+
+            var q = testOptions.FirstOrDefault(x => x.Id == id);
+            return q;
         }
 
         public List<Question> GetQuestionsWithSpecificStatus(bool status)
@@ -48,16 +64,31 @@ namespace VotingApplication.Tests
             return testResponseOption.SingleOrDefault(r => r.option == option.option);
         }
 
+        public Question updatedQuestion = null;
+        public Question UpdateQuestion(Question question)
+        {
+            updatedQuestion = question;
+            return updatedQuestion;
+        }
 
+        public ResponseOption updatedResponse = null; 
+        public ResponseOption UpdateResponseOption(ResponseOption option)
+        {
+            updatedResponse = option;
+            return updatedResponse;
+        }
 
+        public bool deleted = false;
+        public void DeleteQuestion(int id)
+        {
+            deleted = true;
+        }
 
-
-
-
-
-
-
-
+        public bool deletedOption = false;
+        public void DeleteResponseOption(int id, int questionId)
+        {
+            deleted = true;
+        }
 
         public List<Result> GetAllQuestionResults()
         {
@@ -70,53 +101,21 @@ namespace VotingApplication.Tests
 
         public List<Result> GetSpecificResult(int questionId)
         {
-            throw new NotImplementedException();
+            var testResultList = new List<Result>();
+            testResultList.Add(new Result { Id = 1, question = new Question() { Id = 1,Title = "test", Status = true }, responseOption = new ResponseOption() { option = "test" } });
+            testResultList.Add(new Result { Id = 2, question = new Question() { Id = 1,Title = "test", Status = true }, responseOption = new ResponseOption() { option = "test1" } });
+
+            var results = testResultList.Where(r => r.question.Id == questionId).ToList();
+
+            return results;
         }
-
-
-
-
-
-
-
-        
-
-
-        public void DeleteQuestion(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteResponseOption(int id, int questionId)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        
-
-    public ResponseOption GetOptionById(int id, int questionId)
-        {
-            throw new NotImplementedException();
-        }
-
-        
-
-        
 
         public Result SaveAnswer(Result result)
         {
-            throw new NotImplementedException();
-        }
 
-        public Question UpdateQuestion(Question question)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ResponseOption UpdateResponseOption(ResponseOption option)
-        {
-            throw new NotImplementedException();
+            var testResult = new List<Result>();
+            testResult.Add(result);
+            return testResult.SingleOrDefault(r => r.Id == result.Id);
         }
     }
 }

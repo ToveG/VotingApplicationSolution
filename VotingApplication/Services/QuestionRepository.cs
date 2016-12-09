@@ -36,7 +36,6 @@ namespace VotingApplication.Services
 
         public Question UpdateQuestion(Question _question)
         {
-         
             _ctx.SaveChanges();
             return _ctx.Questions.SingleOrDefault(q => q.Id == _question.Id);
         }
