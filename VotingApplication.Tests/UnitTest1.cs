@@ -55,7 +55,7 @@ namespace VotingApplication.Tests
         }
 
         [TestMethod]
-        public void UpdateQuestion_ShouldCreateAResponseOption()
+        public void UpdateQuestion_ShouldUpdateQuestion()
         {
             CreateQuestion q = new CreateQuestion { Title = "test_update", Status = true };
 
@@ -81,7 +81,7 @@ namespace VotingApplication.Tests
         }
 
         [TestMethod]
-        public void UpdateResponseOption_ShouldCreateAResponseOption()
+        public void UpdateResponseOption_ShouldUpdateAResponseOption()
         {
             
             CreateResponseOption r = new CreateResponseOption { option = "test" };
@@ -91,7 +91,7 @@ namespace VotingApplication.Tests
         }
 
         [TestMethod]
-        public void GetAllResults_ShouldReturn2Results()
+        public void GetAllResults_ShouldReturn1Results()
         {
             var x = resultController.Get() as OkNegotiatedContentResult<List<ViewResultModel>>;
 
